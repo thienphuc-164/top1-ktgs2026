@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Học Kinh Thánh</title>
+    <script>
+        // Áp dụng giao diện đã lưu ngay từ đầu để tránh nháy màu
+        try {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.dataset.theme = 'dark';
+            }
+        } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <button id="btn-doc" class="tab-btn active">Đọc</button>
+            <button id="btn-hoc" class="tab-btn">Học thuộc</button>
+            <button id="btn-theme" class="theme-btn" aria-label="Đổi giao diện sáng/tối">☾</button>
+        </div>
+
+        <!-- Màn hình Đọc -->
+        <div id="view-doc" class="view-section active">
+            <h1 class="tieu-de">Ê-phê-sô 5</h1>
+            <div id="noi-dung-doc"></div>
+        </div>
+
+        <!-- Màn hình Học thuộc -->
+        <div id="view-hoc" class="view-section">
+            <div class="dieu-khien">
+                <label>Từ câu <select id="chon-tu"></select></label>
+                <label>đến câu <select id="chon-den"></select></label>
+                <button id="btn-ca-doan" class="nut-nho">Cả đoạn</button>
+                <button id="btn-lam-lai" class="nut-nho">Làm lại</button>
+            </div>
+
+            <div id="san-khau" class="san-khau">
+                <div id="noi-dung-hoc"></div>
+
+                <div id="khu-vuc-nhap" class="input-area">
+                    <div id="dong-dang-go">
+                        <span id="chu-dang-go"></span><span class="con-tro"></span>
+                        <span id="goi-y">Chạm để gõ</span>
+                    </div>
+                    <!-- Ô nhập ẩn: chỉ để nhận phím, không hiển thị -->
+                    <input type="text" id="input-tu" autocomplete="off" autocapitalize="off"
+                           autocorrect="off" spellcheck="false" aria-label="Gõ từ tiếp theo">
+                </div>
+            </div>
+
+            <div id="thong-bao-ket-thuc" class="hidden">
+                <h2 class="chuc-mung">Chúc mừng bạn đã thuộc!</h2>
+                <p id="tom-tat" class="tom-tat"></p>
+                <button id="btn-choi-lai" class="btn-outline">Thử lại</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

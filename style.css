@@ -1,0 +1,346 @@
+/* Sáng: nền #DFD0B8, chữ #222831 — Tối: nền #222831, chữ #DFD0B8 */
+:root {
+    --bg-color: #DFD0B8;
+    --text-color: #222831;
+    --text-muted: #6f6a5e;
+    --accent: #222831;
+    --border: #c9b99f;
+    --red-error: #b3261e;
+    --app-h: 100dvh;
+    --app-top: 0px;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg-color: #222831;
+    --text-color: #DFD0B8;
+    --text-muted: #948e80;
+    --accent: #DFD0B8;
+    --border: #3a414b;
+    --red-error: #e57368;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Khung luôn khớp phần màn hình nhìn thấy được (trừ bàn phím) */
+.container {
+    position: fixed;
+    top: var(--app-top);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 700px;
+    height: var(--app-h);
+    padding: 24px 20px 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 8px 0;
+    transition: color 0.2s ease;
+}
+
+.tab-btn.active {
+    color: var(--accent);
+    font-weight: 600;
+    box-shadow: 0 2px 0 0 var(--accent);
+}
+
+.theme-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 8px;
+}
+
+.view-section {
+    display: none;
+    flex: 1;
+    min-height: 0;
+    animation: fadeIn 0.4s ease;
+}
+
+.view-section.active {
+    display: block;
+    overflow-y: auto;
+}
+
+/* --- Đọc --- */
+.tieu-de {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.cau-doc {
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.so-cau {
+    display: inline-block;
+    min-width: 1.6em;
+    margin-right: 4px;
+    font-size: 0.7em;
+    font-weight: 600;
+    color: var(--text-muted);
+    vertical-align: top;
+    line-height: 2.3;
+}
+
+/* --- Học thuộc --- */
+#view-hoc.active {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.dieu-khien {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    flex-shrink: 0;
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: var(--text-muted);
+}
+
+.dieu-khien label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dieu-khien select {
+    font-size: 15px;
+    padding: 5px 6px;
+    color: var(--text-color);
+    background: var(--bg-color);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.nut-nho {
+    font-size: 14px;
+    padding: 6px 12px;
+    color: var(--text-color);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+.nut-nho:hover {
+    border-color: var(--accent);
+}
+
+/* Chữ nằm giữa màn hình */
+.san-khau {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+#noi-dung-hoc {
+    position: relative;
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    text-align: center;
+}
+
+.cau-hoc {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+/* Câu chưa có từ nào hiện thì không chiếm chỗ */
+.cau-hoc:not(:has(.mo-di, .sai-mau-do)) {
+    display: none;
+}
+
+.tu-hoc {
+    font-size: 22px;
+    line-height: 1.6;
+}
+
+/* Chưa gõ và đang chờ gõ: ẩn hoàn toàn */
+.chua-go, .hien-tai {
+    display: none;
+}
+
+/* Gõ đúng: chữ mờ đi */
+.mo-di {
+    display: inline-block;
+    color: var(--text-color);
+    opacity: 0.3;
+    animation: moDi 0.5s ease;
+}
+
+/* Gõ sai: hiện chữ gốc màu đỏ để nhắc bài */
+.sai-mau-do {
+    display: inline-block;
+    color: var(--red-error);
+    animation: shake 0.3s;
+}
+
+/* Dòng chữ đang gõ (thay cho ô nhập) */
+.input-area {
+    position: relative;
+    flex-shrink: 0;
+    min-height: 44px;
+}
+
+#dong-dang-go {
+    text-align: center;
+    font-size: 18px;
+    line-height: 44px;
+    color: var(--text-muted);
+}
+
+#goi-y {
+    font-size: 15px;
+    opacity: 0.7;
+}
+
+#dong-dang-go.dang-go #goi-y {
+    display: none;
+}
+
+.con-tro {
+    display: none;
+    width: 2px;
+    height: 1.1em;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    background: var(--text-muted);
+    animation: nhap-nhay 1s steps(1) infinite;
+}
+
+#dong-dang-go.dang-go .con-tro {
+    display: inline-block;
+}
+
+/* Ô nhập ẩn phủ lên dòng gõ để nhận chạm; chữ 16px để iOS không tự zoom */
+#input-tu {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    font-size: 16px;
+    border: none;
+    background: transparent;
+}
+
+/* Màn hình chúc mừng */
+#thong-bao-ket-thuc {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.chuc-mung {
+    font-size: 26px;
+    margin-bottom: 12px;
+}
+
+.tom-tat {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.btn-outline {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 24px;
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-outline:hover {
+    background: var(--accent);
+    color: var(--bg-color);
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes moDi {
+    from { opacity: 1; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+@keyframes nhap-nhay {
+    50% { opacity: 0; }
+}
+
+@media screen and (max-width: 600px) {
+    .container { padding: 16px 15px 12px; }
+    .cau-doc { font-size: 18px; }
+    .tu-hoc { font-size: 20px; }
+}
