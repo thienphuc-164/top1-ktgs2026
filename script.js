@@ -61,6 +61,7 @@ const dongDangGo = document.getElementById('dong-dang-go');
 const chuDangGo = document.getElementById('chu-dang-go');
 const thongBaoKetThuc = document.getElementById('thong-bao-ket-thuc');
 const tomTat = document.getElementById('tom-tat');
+const soLanSaiEl = document.getElementById('so-lan-sai');
 const btnChoiLai = document.getElementById('btn-choi-lai');
 const chonTu = document.getElementById('chon-tu');
 const chonDen = document.getElementById('chon-den');
@@ -70,6 +71,7 @@ const btnLamLai = document.getElementById('btn-lam-lai');
 let cacTu = [];           // mỗi phần tử: {element, base, sai}
 let tuHienTaiIndex = 0;   // từ đang chờ gõ
 let daXong = false;
+let soLanSai = 0;         // số lần gõ sai trong lượt học hiện tại
 
 /* ---------- Giao diện sáng / tối ---------- */
 function apDungTheme(theme) {
@@ -181,6 +183,7 @@ function renderHoc() {
     cacTu = [];
     tuHienTaiIndex = 0;
     daXong = false;
+    soLanSai = 0;
 
     sanKhau.classList.remove('hidden');
     thongBaoKetThuc.classList.add('hidden');
@@ -248,7 +251,8 @@ inputTu.addEventListener('input', () => {
         capNhatUI();
         if (tuHienTaiIndex >= cacTu.length) hoanThanh();
     } else {
-        // Sai: hiện chữ gốc màu đỏ để người dùng nhớ lại
+        // Sai: đếm lần sai, hiện chữ gốc màu đỏ để người dùng nhớ lại
+        soLanSai++;
         item.sai = true;
         capNhatUI();
     }
@@ -264,6 +268,12 @@ function hoanThanh() {
     tomTat.textContent = a === b
         ? `${SACH} ${CHUONG}:${a}`
         : `${SACH} ${CHUONG}:${a}-${b}`;
+
+    if (soLanSaiEl) {
+        soLanSaiEl.textContent = soLanSai === 0
+            ? 'Không sai lần nào 🎉'
+            : `Số lần sai: ${soLanSai}`;
+    }
 
     if (typeof confetti === 'function') {
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
