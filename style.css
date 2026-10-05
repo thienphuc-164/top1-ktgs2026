@@ -295,6 +295,13 @@ html, body {
     font-size: 16px;
     line-height: 1.5;
     color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.so-lan-sai {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text-muted);
     margin-bottom: 24px;
 }
 
