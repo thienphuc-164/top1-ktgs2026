@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Học Kinh Thánh</title>
+    <script>
+// Áp dụng giao diện đã lưu ngay từ đầu để tránh nháy màu
+try {
+    if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.dataset.theme = 'dark';
+    }
+} catch (e) {}
+</script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <button id="btn-doc" class="tab-btn active">Đọc</button>
+            <button id="btn-hoc" class="tab-btn">Học thuộc</button>
+            <button id="btn-tra-bai" class="tab-btn">Trả bài</button>
+            <button id="btn-theme" class="theme-btn" aria-label="Đổi giao diện sáng/tối">☾</button>
+        </div>
+
+<!-- Màn hình Đọc -->
+        <div id="view-doc" class="view-section active">
+            <h1 class="tieu-de">Ê-phê-sô 5</h1>
+            <div id="noi-dung-doc"></div>
+        </div>
+
+<!-- Màn hình Học thuộc -->
+        <div id="view-hoc" class="view-section">
+            <div class="dieu-khien">
+                <label>Từ câu <select id="chon-tu"></select></label>
+                <label>đến câu <select id="chon-den"></select></label>
+                <button id="btn-ca-doan" class="nut-nho">Cả đoạn</button>
+                <button id="btn-lam-lai" class="nut-nho">Làm lại</button>
+                <button id="btn-o-chu" class="nut-nho">Ô chữ: Tắt</button>
+            </div>
+
+            <div id="san-khau" class="san-khau">
+                <div id="noi-dung-hoc"></div>
+
+                <div id="khu-vuc-nhap" class="input-area">
+                    <div id="dong-dang-go">
+                        <span id="chu-dang-go"></span><span class="con-tro"></span>
+                        <span id="goi-y">Chạm để gõ</span>
+                    </div>
+<!-- Ô nhập ẩn: chỉ để nhận phím, không hiển thị -->
+                    <input type="text" id="input-tu" autocomplete="off" autocapitalize="off"
+autocorrect="off" spellcheck="false" aria-label="Gõ từ tiếp theo">
+                </div>
+            </div>
+
+            <div id="thong-bao-ket-thuc" class="hidden">
+                <h2 class="chuc-mung">Chúc mừng bạn đã thuộc!</h2>
+                <p id="tom-tat" class="tom-tat"></p>
+                <p id="so-lan-sai" class="so-lan-sai"></p>
+                <button id="btn-choi-lai" class="btn-outline">Thử lại</button>
+            </div>
+        </div>
+
+<!-- Màn hình Trả bài (đọc bằng giọng nói) -->
+        <div id="view-tra-bai" class="view-section">
+            <div class="dieu-khien">
+                <label>Từ câu <select id="tb-chon-tu"></select></label>
+                <label>đến câu <select id="tb-chon-den"></select></label>
+                <button id="tb-ca-doan" class="nut-nho">Cả đoạn</button>
+                <button id="tb-lam-lai" class="nut-nho">Làm lại</button>
+                <button id="tb-btn-o-chu" class="nut-nho">Ô chữ: Tắt</button>
+            </div>
+
+            <div id="tb-san-khau" class="tb-san-khau">
+                <!-- Chữ hiện dần (mờ = đọc đúng, đỏ = đọc sai) -->
+                <div id="tb-noi-dung"></div>
+
+                <!-- Dòng chữ vừa nghe được, chưa nối vào đoạn phía trên -->
+                <div id="tb-dong-dang-nghe" class="tb-dong-dang-nghe"></div>
+
+                <div class="tb-dieu-khien-doc">
+                    <div id="tb-so-loi" class="tb-so-loi">Số lỗi: 0</div>
+                    <div id="tb-trang-thai" class="tb-trang-thai"></div>
+                    <button id="tb-btn-mic" class="nut-mic" aria-label="Bật/tắt micro">🎤</button>
+                </div>
+            </div>
+
+            <div id="tb-ket-thuc" class="hidden">
+                <h2 class="chuc-mung">Hoàn thành trả bài!</h2>
+                <p id="tb-tom-tat" class="tom-tat"></p>
+                <p id="tb-ket-qua-loi" class="so-lan-sai"></p>
+                <button id="tb-choi-lai" class="btn-outline">Trả bài lại</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- voice.js (giọng nói + so khớp phát âm) phải nạp TRƯỚC app.js -->
+    <script src="voice.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
