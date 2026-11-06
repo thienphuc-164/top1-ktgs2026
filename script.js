@@ -50,9 +50,11 @@ function boDau(s) {
 
 const btnDoc = document.getElementById('btn-doc');
 const btnHoc = document.getElementById('btn-hoc');
+const btnTraBai = document.getElementById('btn-tra-bai');
 const btnTheme = document.getElementById('btn-theme');
 const viewDoc = document.getElementById('view-doc');
 const viewHoc = document.getElementById('view-hoc');
+const viewTraBai = document.getElementById('view-tra-bai');
 const noiDungDoc = document.getElementById('noi-dung-doc');
 const noiDungHoc = document.getElementById('noi-dung-hoc');
 const sanKhau = document.getElementById('san-khau');
@@ -110,16 +112,22 @@ inputTu.addEventListener('blur', () => {
 
 /* ---------- Chuyển tab ---------- */
 btnDoc.addEventListener('click', () => {
-    btnDoc.classList.add('active'); btnHoc.classList.remove('active');
-    viewDoc.classList.add('active'); viewHoc.classList.remove('active');
+    btnDoc.classList.add('active'); btnHoc.classList.remove('active'); btnTraBai.classList.remove('active');
+    viewDoc.classList.add('active'); viewHoc.classList.remove('active'); viewTraBai.classList.remove('active');
     inputTu.blur();
 });
 
 btnHoc.addEventListener('click', () => {
-    btnHoc.classList.add('active'); btnDoc.classList.remove('active');
-    viewHoc.classList.add('active'); viewDoc.classList.remove('active');
+    btnHoc.classList.add('active'); btnDoc.classList.remove('active'); btnTraBai.classList.remove('active');
+    viewHoc.classList.add('active'); viewDoc.classList.remove('active'); viewTraBai.classList.remove('active');
     focusNhap();
     cuonXuongCuoi();
+});
+
+btnTraBai.addEventListener('click', () => {
+    btnTraBai.classList.add('active'); btnDoc.classList.remove('active'); btnHoc.classList.remove('active');
+    viewTraBai.classList.add('active'); viewDoc.classList.remove('active'); viewHoc.classList.remove('active');
+    inputTu.blur();
 });
 
 // Chạm vào khoảng trống trong màn Học thuộc để mở bàn phím
@@ -246,7 +254,7 @@ inputTu.addEventListener('input', () => {
     datLaiInput();
     if (daGo === '') return;
 
-    if (boDau(daGo) === item.base) {
+    if (khopAm(daGo, item.base)) {
         tuHienTaiIndex++;
         capNhatUI();
         if (tuHienTaiIndex >= cacTu.length) hoanThanh();
